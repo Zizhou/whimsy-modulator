@@ -1,0 +1,57 @@
+{% extends 'mybase.html' %}
+{% block head %}
+
+<script>
+
+function button_click(){
+    var data = $('#data').val();
+    var user = $('#submitter').val();
+    post_me(data, user); 
+    //new_sentence();
+};
+
+function post_me(data, user){
+    $.post('/whimsy/post/' + data + '/' + user, function(data){
+        if (data == 'True') {
+            $('#message').html('Added!');
+            new_sentence();
+            alert('???');
+        }
+        else {
+            $('#message').html('Failure!');
+            alert('!!!');
+        }
+    });
+    
+};
+
+
+function new_sentence(){
+    $.get("{% url 'whimsy:random' %}", function(data){
+        $( '#title' ).html(data);
+    });
+};
+
+$(document).ready(new_sentence());
+</script>
+
+{% endblock %}
+{% block pagetitle %}
+<div id = 'title'></div>
+{% endblock %}
+
+
+{% block body %}
+<div id = 'message'></div>
+<form id = 'whimsytest'>
+Text goes here:
+<input type = 'text' id = 'data'>
+<input type = 'hidden' id = 'submitter' value = {{request.user}}>
+<input type = button onclick = 'button_click()' value = 'click me'>
+
+</form>
+<br>
+<a href = {% url 'whimsy:random' %} >Link to rando</a>
+</br>
+{{request.user}}
+{% endblock %}

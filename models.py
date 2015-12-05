@@ -27,7 +27,7 @@ class Sentence(models.Model):
         output = 'butts, lol'
         return output
 
-    def put_sentence(self, data, user):
+    def post_sentence(self, data, user):
         if data == '' or len(data) > 299:
             return False
         else:
